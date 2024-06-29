@@ -225,6 +225,10 @@ let products = [
   },
 ];
 
+app.get("/", (req, res) => {
+  res.send("Flip Deal Product Listing Page");
+});
+
 //Endpoint 1: Get the products sorted by popularity
 function sortProductByPopularity(product1, product2) {
   return product2.rating - product1.rating;
