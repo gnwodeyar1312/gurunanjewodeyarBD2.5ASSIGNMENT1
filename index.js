@@ -74,7 +74,7 @@ let products = [
   },
   {
     id: 7,
-    name: "Apple Pixel 5",
+    name: "Apple Pixel 6",
     brand: "Apple",
     price: 70000,
     ram: 4,
@@ -238,7 +238,8 @@ function sortProductByPopularity(product1, product2) {
 }
 
 app.get("/products/sort/popularity", (req, res) => {
-  let sortedProducts = products.sort(sortProductByPopularity);
+  let productCopy = products.slice();
+  let sortedProducts = productCopy.sort(sortProductByPopularity);
   res.json({ products: sortedProducts });
 });
 
@@ -248,7 +249,8 @@ function sortProductByPrice(product1, product2) {
 }
 
 app.get("/products/sort/price-high-to-low", (req, res) => {
-  let sortedProducts = products.sort(sortProductByPrice);
+  let productCopy = products.slice();
+  let sortedProducts = productCopy.sort(sortProductByPrice);
   res.json({ products: sortedProducts });
 });
 
@@ -258,7 +260,8 @@ function sortProductByPriceLowToHigh(product1, product2) {
 }
 
 app.get("/products/sort/price-low-to-high", (req, res) => {
-  let sortedProducts = products.sort(sortProductByPriceLowToHigh);
+  let productCopy = products.slice();
+  let sortedProducts = productCopy.sort(sortProductByPriceLowToHigh);
   res.json({ products: sortedProducts });
 });
 
@@ -269,10 +272,7 @@ function filterByRam(product, ram) {
 
 app.get("/products/filter/ram", (req, res) => {
   let ram = parseInt(req.query.ram);
-  let productCopy = products.slice();
-  let sortedProducts = productCopy.filter((product) =>
-    filterByRam(product, ram),
-  );
+  let sortedProducts = products.filter((product) => filterByRam(product, ram));
   res.json({ products: sortedProducts });
 });
 
@@ -283,10 +283,7 @@ function filterByRom(product, rom) {
 
 app.get("/products/filter/rom", (req, res) => {
   let rom = parseInt(req.query.rom);
-  let productCopy = products.slice();
-  let sortedProducts = productCopy.filter((product) =>
-    filterByRom(product, rom),
-  );
+  let sortedProducts = products.filter((product) => filterByRom(product, rom));
   res.json({ products: sortedProducts });
 });
 
@@ -297,8 +294,7 @@ function filterByBrand(product, brand) {
 
 app.get("/products/filter/brand", (req, res) => {
   let brand = req.query.brand;
-  let productCopy = products.slice();
-  let sortedProducts = productCopy.filter((product) =>
+  let sortedProducts = products.filter((product) =>
     filterByBrand(product, brand),
   );
   res.json({ products: sortedProducts });
@@ -311,20 +307,18 @@ function filterByOs(product, os) {
 
 app.get("/products/filter/os", (req, res) => {
   let os = req.query.os;
-  let productCopy = products.slice();
-  let sortedProducts = productCopy.filter((product) => filterByOs(product, os));
+  let sortedProducts = products.filter((product) => filterByOs(product, os));
   res.json({ products: sortedProducts });
 });
 
 //Endpoint 8: Filter the products based on the “Price” option.
 function filterByPrice(product, price) {
-  return product.price <= price;
+  return product.price === price;
 }
 
 app.get("/products/filter/price", (req, res) => {
   let price = parseFloat(req.query.price);
-  let productCopy = products.slice();
-  let sortedProducts = productCopy.filter((product) =>
+  let sortedProducts = products.filter((product) =>
     filterByPrice(product, price),
   );
   res.json({ products: sortedProducts });
